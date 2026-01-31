@@ -1,7 +1,0 @@
-{
-  "rootDirectory": "Downloads/admissions-ism-0-diakhateismaila68-3842-1c0b6a3c",
-  "installCommand": "npm install",
-  "buildCommand": "npm run build",
-  "framework": "nextjs"
-}
-
