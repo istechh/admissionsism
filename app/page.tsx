@@ -83,7 +83,7 @@ export default function HomePage() {
       {/* Left Column: Visual & Branding (Desktop) - Professional Solid Style */}
       <div className="hidden lg:flex relative bg-[#0f172a] flex-col justify-between p-12 text-white overflow-hidden">
         {/* Abstract Branding Background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-900/50 via-transparent to-orange-500/10"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-amber-900/50 via-transparent to-orange-500/10"></div>
         <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5"></div>
 
         {/* Content */}
@@ -124,7 +124,7 @@ export default function HomePage() {
 
         {/* Mobile Hero Header - Clean Solid */}
         <div className="lg:hidden relative h-48 w-full bg-[#0f172a] flex flex-col justify-end p-6">
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-900/50 to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-amber-900/50 to-transparent"></div>
 
           <div className="relative z-10 text-white">
             <div className="flex items-center gap-2 mb-3">
@@ -193,7 +193,7 @@ export default function HomePage() {
                       </div>
                     )}
 
-                    <Button className="w-full h-11 text-base" type="submit" disabled={isLoading}>
+                    <Button className="w-full h-11 text-base bg-amber-700 hover:bg-amber-800 text-white" type="submit" disabled={isLoading}>
                       {isLoading ? "Authentification..." : "Se connecter"}
                     </Button>
                   </form>
@@ -209,22 +209,38 @@ export default function HomePage() {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-2">
-                    <div className="flex justify-between">
-                      <span className="font-semibold">Superviseur:</span>
-                      <span className="font-mono text-primary font-bold">sup123</span>
+                  <div className="grid gap-2 text-sm">
+                    <div className="flex flex-col gap-1 p-2 rounded bg-amber-50 border border-amber-200">
+                      <span className="font-semibold text-amber-900">Superviseur:</span>
+                      <div className="flex items-center gap-2">
+                        <span className="font-mono text-xs">superviseur@ism.sn</span>
+                        <span className="text-muted-foreground">/</span>
+                        <span className="font-mono text-xs font-bold text-amber-700">sup123</span>
+                      </div>
                     </div>
-                    <div className="flex justify-between">
-                      <span className="font-semibold">Directeur:</span>
-                      <span className="font-mono">dir123</span>
+                    <div className="flex flex-col gap-1 p-2 rounded bg-gray-50 border border-gray-200">
+                      <span className="font-semibold text-gray-900">Directeur:</span>
+                      <div className="flex items-center gap-2">
+                        <span className="font-mono text-xs">directeur@ism.sn</span>
+                        <span className="text-muted-foreground">/</span>
+                        <span className="font-mono text-xs font-bold">dir123</span>
+                      </div>
                     </div>
-                    <div className="flex justify-between">
-                      <span className="font-semibold">Agent:</span>
-                      <span className="font-mono">agent123</span>
+                    <div className="flex flex-col gap-1 p-2 rounded bg-gray-50 border border-gray-200">
+                      <span className="font-semibold text-gray-900">Agent:</span>
+                      <div className="flex items-center gap-2">
+                        <span className="font-mono text-xs">agent@ism.sn</span>
+                        <span className="text-muted-foreground">/</span>
+                        <span className="font-mono text-xs font-bold">agent123</span>
+                      </div>
                     </div>
-                    <div className="flex justify-between">
-                      <span className="font-semibold">IT:</span>
-                      <span className="font-mono">it123</span>
+                    <div className="flex flex-col gap-1 p-2 rounded bg-gray-50 border border-gray-200">
+                      <span className="font-semibold text-gray-900">IT:</span>
+                      <div className="flex items-center gap-2">
+                        <span className="font-mono text-xs">it@ism.sn</span>
+                        <span className="text-muted-foreground">/</span>
+                        <span className="font-mono text-xs font-bold">it123</span>
+                      </div>
                     </div>
                   </div>
                 </TabsContent>
