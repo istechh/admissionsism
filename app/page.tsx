@@ -209,64 +209,69 @@ export default function HomePage() {
                     </div>
                   </div>
 
-                  <div className="space-y-2 text-xs text-muted-foreground bg-muted/50 p-4 rounded-lg">
+                  <div className="grid grid-cols-2 gap-2">
+                    <div className="flex justify-between">
+                      <span className="font-semibold">Superviseur:</span>
+                      <span className="font-mono text-primary font-bold">sup123</span>
+                    </div>
                     <div className="flex justify-between">
                       <span className="font-semibold">Directeur:</span>
-                      <span className="font-mono">directeur@ism.sn / dir123</span>
+                      <span className="font-mono">dir123</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="font-semibold">Agent:</span>
-                      <span className="font-mono">agent@ism.sn / agent123</span>
+                      <span className="font-mono">agent123</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="font-semibold">IT:</span>
-                      <span className="font-mono">it@ism.sn / it123</span>
+                      <span className="font-mono">it123</span>
                     </div>
                   </div>
-                </TabsContent>
+                </div>
+              </TabsContent>
 
-                <TabsContent value="register" className="space-y-4 px-4 lg:px-0 pb-4 lg:pb-0">
-                  <form onSubmit={handleRegister} className="space-y-4">
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <Label>Prénom</Label>
-                        <Input placeholder="Jean" value={registerPrenom} onChange={e => setRegisterPrenom(e.target.value)} className="h-11" required />
-                      </div>
-                      <div className="space-y-2">
-                        <Label>Nom</Label>
-                        <Input placeholder="Diop" value={registerNom} onChange={e => setRegisterNom(e.target.value)} className="h-11" required />
-                      </div>
+              <TabsContent value="register" className="space-y-4 px-4 lg:px-0 pb-4 lg:pb-0">
+                <form onSubmit={handleRegister} className="space-y-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label>Prénom</Label>
+                      <Input placeholder="Jean" value={registerPrenom} onChange={e => setRegisterPrenom(e.target.value)} className="h-11" required />
                     </div>
                     <div className="space-y-2">
-                      <Label>Email Personnel</Label>
-                      <Input type="email" placeholder="jean.diop@gmail.com" value={registerEmail} onChange={e => setRegisterEmail(e.target.value)} className="h-11" required />
+                      <Label>Nom</Label>
+                      <Input placeholder="Diop" value={registerNom} onChange={e => setRegisterNom(e.target.value)} className="h-11" required />
                     </div>
-                    <div className="space-y-2">
-                      <Label>Mot de passe</Label>
-                      <Input type="password" value={registerPassword} onChange={e => setRegisterPassword(e.target.value)} className="h-11" required />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Email Personnel</Label>
+                    <Input type="email" placeholder="jean.diop@gmail.com" value={registerEmail} onChange={e => setRegisterEmail(e.target.value)} className="h-11" required />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Mot de passe</Label>
+                    <Input type="password" value={registerPassword} onChange={e => setRegisterPassword(e.target.value)} className="h-11" required />
+                  </div>
+
+                  {error && (
+                    <div className="p-3 rounded-md bg-destructive/10 text-destructive text-sm font-medium">
+                      {error}
                     </div>
+                  )}
 
-                    {error && (
-                      <div className="p-3 rounded-md bg-destructive/10 text-destructive text-sm font-medium">
-                        {error}
-                      </div>
-                    )}
+                  <Button className="w-full h-11 text-base group" type="submit" disabled={isLoading}>
+                    {isLoading ? "Création..." : "Démarrer ma candidature"}
+                    {!isLoading && <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />}
+                  </Button>
+                </form>
+              </TabsContent>
+            </Tabs>
+          </CardContent>
+        </Card>
 
-                    <Button className="w-full h-11 text-base group" type="submit" disabled={isLoading}>
-                      {isLoading ? "Création..." : "Démarrer ma candidature"}
-                      {!isLoading && <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />}
-                    </Button>
-                  </form>
-                </TabsContent>
-              </Tabs>
-            </CardContent>
-          </Card>
-
-          <p className="text-center text-sm text-muted-foreground mt-8 pb-8 lg:pb-0">
-            En continuant, vous acceptez nos <a href="#" className="underline hover:text-primary">Conditions d'utilisation</a>.
-          </p>
-        </div>
+        <p className="text-center text-sm text-muted-foreground mt-8 pb-8 lg:pb-0">
+          En continuant, vous acceptez nos <a href="#" className="underline hover:text-primary">Conditions d'utilisation</a>.
+        </p>
       </div>
     </div>
+    </div >
   )
 }
