@@ -8,17 +8,56 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { dataStore, schools, type Application } from "@/lib/store"
 import { Download, FileSpreadsheet, TrendingUp, Users, GraduationCap, BarChart3 } from "lucide-react"
 import { Label } from "@/components/ui/label"
+import { useAuth } from "@/lib/auth-context"
 
 export default function DirecteurStats() {
+  const { user } = useAuth()
   const [stats, setStats] = useState(dataStore.getStats())
   const [applications, setApplications] = useState<Application[]>([])
   const [exportEcole, setExportEcole] = useState<string>("all")
   const [exportStatus, setExportStatus] = useState<string>("complete")
 
   useEffect(() => {
-    setStats(dataStore.getStats())
-    setApplications(dataStore.getApplications())
-  }, [])
+    if (!user) return
+    
+    // Filter applications by director's school
+    const allApps = dataStore.getApplications()
+    const scopedApps = user.role === 'directeur' && user.ecole
+      ? allApps.filter(app => app.ecole === user.ecole)
+      : allApps
+    
+    setApplications(scopedApps)
+    
+    // Calculate scoped stats
+    const scopedStats = {
+      total: scopedApps.length,
+      soumises: scopedApps.filter(a => a.status === 'soumise').length,
+      enVerification: scopedApps.filter(a => a.status === 'en_verification').length,
+      aCompleter: scopedApps.filter(a => a.status === 'a_completer').length,
+      verifiees: scopedApps.filter(a => a.status === 'verifiee').length,
+      validees: scopedApps.filter(a => a.status === 'validee').length,
+      rejetees: scopedApps.filter(a => a.status === 'rejetee').length,
+      enAttenteIT: scopedApps.filter(a => a.status === 'en_attente_it').length,
+      completes: scopedApps.filter(a => a.status === 'complete').length,
+      parEcole: user.role === 'directeur' && user.ecole
+        ? [{ ecole: user.ecole, count: scopedApps.length }]
+        : schools.map(s => ({
+            ecole: s.nom,
+            count: scopedApps.filter(a => a.ecole === s.nom).length
+          })),
+      parNiveau: ['L1', 'L2', 'L3', 'M1', 'M2'].map(n => ({
+        niveau: n,
+        count: scopedApps.filter(a => a.niveau === n).length
+      }))
+    }
+    
+    setStats(scopedStats)
+    
+    // Set default export to director's school if applicable
+    if (user.role === 'directeur' && user.ecole) {
+      setExportEcole(user.ecole)
+    }
+  }, [user])
 
   const exportToCSV = () => {
     let dataToExport = [...applications]
@@ -184,20 +223,22 @@ export default function DirecteurStats() {
           </CardHeader>
           <CardContent>
             <div className="flex flex-col sm:flex-row gap-4 items-end">
-              <div className="space-y-2 flex-1">
-                <Label>Ecole</Label>
-                <Select value={exportEcole} onValueChange={setExportEcole}>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">Toutes les ecoles</SelectItem>
-                    {schools.map(school => (
-                      <SelectItem key={school.id} value={school.nom}>{school.nom}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
+              {user?.role !== 'directeur' && (
+                <div className="space-y-2 flex-1">
+                  <Label>Ecole</Label>
+                  <Select value={exportEcole} onValueChange={setExportEcole}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">Toutes les ecoles</SelectItem>
+                      {schools.map(school => (
+                        <SelectItem key={school.id} value={school.nom}>{school.nom}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              )}
               <div className="space-y-2 flex-1">
                 <Label>Statut</Label>
                 <Select value={exportStatus} onValueChange={setExportStatus}>

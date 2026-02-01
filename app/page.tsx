@@ -81,9 +81,9 @@ export default function HomePage() {
   return (
     <div className="min-h-screen grid lg:grid-cols-2">
       {/* Left Column: Visual & Branding (Desktop) - Professional Solid Style */}
-      <div className="hidden lg:flex relative bg-[#0f172a] flex-col justify-between p-12 text-white overflow-hidden">
+      <div className="hidden lg:flex relative bg-[#2c2416] flex-col justify-between p-12 text-white overflow-hidden">
         {/* Abstract Branding Background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-amber-900/50 via-transparent to-orange-500/10"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-amber-900/40 via-transparent to-amber-600/10"></div>
         <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5"></div>
 
         {/* Content */}
@@ -105,11 +105,11 @@ export default function HomePage() {
 
         <div className="relative z-10 space-y-4">
           <div className="flex items-center gap-3">
-            <CheckCircle2 className="h-6 w-6 text-orange-500" />
+            <CheckCircle2 className="h-6 w-6 text-amber-400" />
             <span className="font-medium">Accès Sécurisé pour le Personnel</span>
           </div>
           <div className="flex items-center gap-3">
-            <CheckCircle2 className="h-6 w-6 text-orange-500" />
+            <CheckCircle2 className="h-6 w-6 text-amber-400" />
             <span className="font-medium">Tableau de Bord de Supervision</span>
           </div>
         </div>
@@ -123,8 +123,8 @@ export default function HomePage() {
       <div className="flex flex-col lg:justify-center min-h-screen bg-gray-50 lg:bg-white">
 
         {/* Mobile Hero Header - Clean Solid */}
-        <div className="lg:hidden relative h-48 w-full bg-[#0f172a] flex flex-col justify-end p-6">
-          <div className="absolute inset-0 bg-gradient-to-br from-amber-900/50 to-transparent"></div>
+        <div className="lg:hidden relative h-48 w-full bg-[#2c2416] flex flex-col justify-end p-6">
+          <div className="absolute inset-0 bg-gradient-to-br from-amber-900/40 to-transparent"></div>
 
           <div className="relative z-10 text-white">
             <div className="flex items-center gap-2 mb-3">
