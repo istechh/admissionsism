@@ -81,7 +81,7 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen grid lg:grid-cols-2">
-      {/* Left Column: Visual & Branding */}
+      {/* Left Column: Visual & Branding (Desktop) */}
       <div className="hidden lg:flex relative bg-primary flex-col justify-between p-12 text-white overflow-hidden">
         {/* Background Overlay Pattern */}
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center opacity-20 mix-blend-overlay"></div>
@@ -125,31 +125,49 @@ export default function HomePage() {
       </div>
 
       {/* Right Column: Auth Forms */}
-      <div className="flex items-center justify-center p-6 bg-background">
-        <div className="w-full max-w-md space-y-8">
-          <div className="text-center lg:hidden mb-8">
-            <div className="h-16 w-16 bg-primary mx-auto rounded-xl flex items-center justify-center mb-4">
-              <GraduationCap className="h-8 w-8 text-white" />
+      <div className="flex flex-col lg:justify-center min-h-screen bg-muted/30 lg:bg-background">
+
+        {/* Mobile Hero Header */}
+        <div className="lg:hidden relative h-64 w-full bg-primary overflow-hidden flex flex-col justify-end p-6">
+          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center opacity-30 mix-blend-overlay"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+
+          <div className="relative z-10 text-white">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="h-8 w-8 bg-white rounded p-0.5">
+                <img src="/ism-logo.jpg" alt="ISM Logo" className="h-full w-full object-contain rounded-sm" />
+              </div>
+              <span className="font-bold tracking-tight text-lg">Groupe ISM</span>
             </div>
-            <h2 className="text-2xl font-bold text-primary">Groupe ISM</h2>
+            <h1 className="text-3xl font-bold leading-tight mb-1">
+              L'Excellence <br /> commence ici.
+            </h1>
           </div>
+        </div>
 
-          <div className="flex flex-col space-y-2 text-center">
-            <h2 className="text-3xl font-bold tracking-tight">Portail d'Admission</h2>
-            <p className="text-muted-foreground">
-              Connectez-vous pour accéder à votre espace
-            </p>
-          </div>
+        {/* Content Container (Mobile: -margin to overlap header, Desktop: centered) */}
+        <div className="w-full max-w-md mx-auto p-6 lg:p-0 -mt-6 lg:mt-0 relative z-20">
+          <Card className="border-0 shadow-lg lg:shadow-none overflow-hidden">
+            <CardHeader className="pb-2 pt-6 text-center space-y-1 lg:hidden">
+              <CardTitle className="text-xl">Bienvenue</CardTitle>
+              <CardDescription>Connectez-vous à votre espace</CardDescription>
+            </CardHeader>
 
-          <Tabs defaultValue="login" className="w-full">
-            <TabsList className="grid w-full grid-cols-2 mb-8">
-              <TabsTrigger value="login">Connexion</TabsTrigger>
-              <TabsTrigger value="register">Candidature</TabsTrigger>
-            </TabsList>
+            <div className="hidden lg:flex flex-col space-y-2 text-center mb-8">
+              <h2 className="text-3xl font-bold tracking-tight">Portail d'Admission</h2>
+              <p className="text-muted-foreground">
+                Connectez-vous pour accéder à votre espace
+              </p>
+            </div>
 
-            <TabsContent value="login">
-              <Card className="border-0 shadow-none">
-                <CardContent className="p-0 space-y-4">
+            <CardContent className="p-0 lg:p-6 space-y-4">
+              <Tabs defaultValue="login" className="w-full">
+                <TabsList className="grid w-full grid-cols-2 mb-8">
+                  <TabsTrigger value="login">Connexion</TabsTrigger>
+                  <TabsTrigger value="register">Candidature</TabsTrigger>
+                </TabsList>
+
+                <TabsContent value="login" className="space-y-4 px-4 lg:px-0 pb-4 lg:pb-0">
                   <form onSubmit={handleLogin} className="space-y-4">
                     <div className="space-y-2">
                       <Label htmlFor="email">Email Académique</Label>
@@ -186,7 +204,7 @@ export default function HomePage() {
                     </Button>
                   </form>
 
-                  <div className="relative">
+                  <div className="relative py-2">
                     <div className="absolute inset-0 flex items-center">
                       <span className="w-full border-t" />
                     </div>
@@ -203,13 +221,9 @@ export default function HomePage() {
                     <div>IT: <code className="text-primary">it123</code></div>
                     <div>Candidat: <code className="text-primary">Inscrivez-vous ➔</code></div>
                   </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
+                </TabsContent>
 
-            <TabsContent value="register">
-              <Card className="border-0 shadow-none">
-                <CardContent className="p-0 space-y-4">
+                <TabsContent value="register" className="space-y-4 px-4 lg:px-0 pb-4 lg:pb-0">
                   <form onSubmit={handleRegister} className="space-y-4">
                     <div className="grid grid-cols-2 gap-4">
                       <div className="space-y-2">
@@ -241,13 +255,13 @@ export default function HomePage() {
                       {!isLoading && <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />}
                     </Button>
                   </form>
-                </CardContent>
-              </Card>
-            </TabsContent>
-          </Tabs>
+                </TabsContent>
+              </Tabs>
+            </CardContent>
+          </Card>
 
-          <p className="text-center text-sm text-muted-foreground mt-8">
-            En continuant, vous acceptez nos <a href="#" className="underline hover:text-primary">Conditions d'utilisation</a> et notre <a href="#" className="underline hover:text-primary">Politique de confidentialité</a>.
+          <p className="text-center text-sm text-muted-foreground mt-8 pb-8 lg:pb-0">
+            En continuant, vous acceptez nos <a href="#" className="underline hover:text-primary">Conditions d'utilisation</a>.
           </p>
         </div>
       </div>
