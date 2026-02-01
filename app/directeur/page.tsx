@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { DashboardLayout } from "@/components/dashboard-layout"
+import { useAuth } from "@/lib/auth-context"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { dataStore } from "@/lib/store"
 import { FileText, Clock, CheckCircle, XCircle, TrendingUp } from "lucide-react"
@@ -9,6 +10,7 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 
 export default function DirecteurDashboard() {
+  const { user } = useAuth()
   const [stats, setStats] = useState({
     enAttente: 0,
     validees: 0,
@@ -17,17 +19,25 @@ export default function DirecteurDashboard() {
   })
 
   useEffect(() => {
-    const allStats = dataStore.getStats()
-    setStats({
-      enAttente: allStats.verifiees,
-      validees: allStats.validees + allStats.enAttenteIT + allStats.completes,
-      rejetees: allStats.rejetees,
-      total: allStats.total,
-    })
-  }, [])
+    // Basic permissions check
+    if (!user) return
 
-  const tauxValidation = stats.validees + stats.rejetees > 0 
-    ? Math.round((stats.validees / (stats.validees + stats.rejetees)) * 100) 
+    const allApps = dataStore.getApplications()
+    // Scope: If Director, filter by their School
+    const scopedApps = user.role === 'directeur' && user.ecole
+      ? allApps.filter(app => app.ecole === user.ecole)
+      : allApps
+
+    setStats({
+      enAttente: scopedApps.filter(a => a.status === 'verifiee').length,
+      validees: scopedApps.filter(a => ['validee', 'en_attente_it', 'complete'].includes(a.status)).length,
+      rejetees: scopedApps.filter(a => a.status === 'rejetee').length,
+      total: scopedApps.length,
+    })
+  }, [user])
+
+  const tauxValidation = stats.validees + stats.rejetees > 0
+    ? Math.round((stats.validees / (stats.validees + stats.rejetees)) * 100)
     : 0
 
   return (
