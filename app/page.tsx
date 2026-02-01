@@ -80,66 +80,61 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen grid lg:grid-cols-2">
-      {/* Left Column: Visual & Branding (Desktop) */}
-      <div className="hidden lg:flex relative bg-primary flex-col justify-between p-12 text-white overflow-hidden">
-        {/* Background Overlay Pattern */}
-        <div className="absolute inset-0 bg-[url('/login-bg.jpg')] bg-cover bg-center opacity-40 mix-blend-overlay"></div>
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+      {/* Left Column: Visual & Branding (Desktop) - Professional Solid Style */}
+      <div className="hidden lg:flex relative bg-[#0f172a] flex-col justify-between p-12 text-white overflow-hidden">
+        {/* Abstract Branding Background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-900/50 via-transparent to-orange-500/10"></div>
+        <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5"></div>
 
         {/* Content */}
         <div className="relative z-10">
           <div className="flex items-center gap-3 mb-8">
-            <div className="h-12 w-12 bg-white rounded-lg p-1">
+            <div className="h-12 w-12 bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg p-1 flex items-center justify-center">
               <img src="/ism-logo.jpg" alt="ISM Logo" className="h-full w-full object-contain rounded" />
             </div>
             <span className="text-2xl font-bold tracking-tight">Groupe ISM</span>
           </div>
 
           <h1 className="text-5xl font-extrabold leading-tight mb-6">
-            L'Excellence <br /> commence ici.
+            Portail <br /> d'Admission
           </h1>
-          <p className="text-xl text-white/90 max-w-md font-light">
-            Rejoignez la communauté des leaders de demain. Postulez en ligne et suivez votre admission en temps réel.
+          <p className="text-xl text-white/80 max-w-md font-light">
+            Gestion centralisée des candidatures et suivi académique en temps réel.
           </p>
         </div>
 
         <div className="relative z-10 space-y-4">
           <div className="flex items-center gap-3">
-            <CheckCircle2 className="h-6 w-6 text-green-400" />
-            <span className="font-medium">Processus 100% Digitalisé</span>
+            <CheckCircle2 className="h-6 w-6 text-orange-500" />
+            <span className="font-medium">Accès Sécurisé pour le Personnel</span>
           </div>
           <div className="flex items-center gap-3">
-            <CheckCircle2 className="h-6 w-6 text-green-400" />
-            <span className="font-medium">Analyse IA de votre dossier</span>
-          </div>
-          <div className="flex items-center gap-3">
-            <CheckCircle2 className="h-6 w-6 text-green-400" />
-            <span className="font-medium">Réponse rapide garantie</span>
+            <CheckCircle2 className="h-6 w-6 text-orange-500" />
+            <span className="font-medium">Tableau de Bord de Supervision</span>
           </div>
         </div>
 
-        <div className="relative z-10 text-xs text-white/60">
-          Built for Future Leaders • © 2026 ISM Digital
+        <div className="relative z-10 text-xs text-white/40">
+          © 2026 Groupe ISM • Plateforme version 2.0
         </div>
       </div>
 
       {/* Right Column: Auth Forms */}
-      <div className="flex flex-col lg:justify-center min-h-screen bg-muted/30 lg:bg-background">
+      <div className="flex flex-col lg:justify-center min-h-screen bg-gray-50 lg:bg-white">
 
-        {/* Mobile Hero Header */}
-        <div className="lg:hidden relative h-64 w-full bg-primary overflow-hidden flex flex-col justify-end p-6">
-          <div className="absolute inset-0 bg-[url('/login-bg.jpg')] bg-cover bg-center opacity-40 mix-blend-overlay"></div>
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+        {/* Mobile Hero Header - Clean Solid */}
+        <div className="lg:hidden relative h-48 w-full bg-[#0f172a] flex flex-col justify-end p-6">
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-900/50 to-transparent"></div>
 
           <div className="relative z-10 text-white">
             <div className="flex items-center gap-2 mb-3">
-              <div className="h-8 w-8 bg-white rounded p-0.5">
+              <div className="h-8 w-8 bg-white/10 backdrop-blur rounded p-0.5">
                 <img src="/ism-logo.jpg" alt="ISM Logo" className="h-full w-full object-contain rounded-sm" />
               </div>
               <span className="font-bold tracking-tight text-lg">Groupe ISM</span>
             </div>
-            <h1 className="text-3xl font-bold leading-tight mb-1">
-              L'Excellence <br /> commence ici.
+            <h1 className="text-2xl font-bold leading-tight mb-1">
+              Portail d'Admission
             </h1>
           </div>
         </div>
