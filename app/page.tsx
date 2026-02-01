@@ -227,8 +227,7 @@ export default function HomePage() {
                       <span className="font-mono">it123</span>
                     </div>
                   </div>
-                </div>
-              </TabsContent>
+                </TabsContent>
 
               <TabsContent value="register" className="space-y-4 px-4 lg:px-0 pb-4 lg:pb-0">
                 <form onSubmit={handleRegister} className="space-y-4">
@@ -272,6 +271,6 @@ export default function HomePage() {
         </p>
       </div>
     </div>
-    </div >
+  </div>
   )
 }
