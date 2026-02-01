@@ -13,8 +13,7 @@ export interface User {
 
 import { calculatePredictiveScore, generateAccountDetails } from "./intelligence"
 
-export type ApplicationStatus = 'brouillon' | 'soumise' | 'a_completer' | 'verifiee' | 'validee' | 'rejetee' | 'complete' | 'en_attente_it'
-  | 'complete'
+export type ApplicationStatus = 'brouillon' | 'soumise' | 'en_verification' | 'a_completer' | 'verifiee' | 'validee' | 'rejetee' | 'complete' | 'en_attente_it'
 
 export interface Application {
   id: string
