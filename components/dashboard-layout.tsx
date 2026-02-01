@@ -12,13 +12,15 @@ import {
   CheckCircle,
   Monitor,
   BarChart3,
-  Settings
+  Settings,
+  Menu
 } from "lucide-react"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
 import { usePathname } from "next/navigation"
 import type { ReactNode } from "react"
 import type { UserRole } from "@/lib/store"
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 
 interface NavItem {
   label: string
@@ -85,62 +87,88 @@ export function DashboardLayout({ children }: { children: ReactNode }) {
     router.push("/")
   }
 
-  return (
-    <div className="min-h-screen flex">
-      {/* Sidebar */}
-      <aside className="w-64 bg-sidebar text-sidebar-foreground flex flex-col">
-        {/* Logo */}
-        <div className="p-4 border-b border-sidebar-border">
-          <Link href="/" className="flex items-center gap-3">
-            <div className="relative h-10 w-10 overflow-hidden rounded-md">
-              <img src="/ism-logo.jpg" alt="ISM Logo" className="h-full w-full object-cover" />
-            </div>
-            <div>
-              <h1 className="font-bold text-lg">ISM Admissions</h1>
-              <p className="text-xs text-sidebar-foreground/70">{roleLabels[user.role]}</p>
-            </div>
-          </Link>
-        </div>
-
-        {/* Navigation */}
-        <nav className="flex-1 p-4 space-y-1">
-          {navItems.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={cn(
-                "flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors",
-                pathname === item.href
-                  ? "bg-sidebar-accent text-sidebar-accent-foreground"
-                  : "text-sidebar-foreground/80 hover:bg-sidebar-accent/50 hover:text-sidebar-accent-foreground"
-              )}
-            >
-              {item.icon}
-              {item.label}
-            </Link>
-          ))}
-        </nav>
-
-        {/* User info & Logout */}
-        <div className="p-4 border-t border-sidebar-border">
-          <div className="mb-3">
-            <p className="font-medium text-sm">{user.prenom} {user.nom}</p>
-            <p className="text-xs text-sidebar-foreground/70">{user.email}</p>
+  const SidebarContent = () => (
+    <div className="flex h-full flex-col">
+      {/* Logo */}
+      <div className="p-4 border-b border-sidebar-border">
+        <Link href="/" className="flex items-center gap-3">
+          <div className="relative h-10 w-10 overflow-hidden rounded-md">
+            <img src="/ism-logo.jpg" alt="ISM Logo" className="h-full w-full object-cover" />
           </div>
-          <Button
-            variant="outline"
-            size="sm"
-            className="w-full bg-transparent border-sidebar-border text-sidebar-foreground hover:bg-sidebar-accent"
-            onClick={handleLogout}
+          <div>
+            <h1 className="font-bold text-lg">ISM Admissions</h1>
+            <p className="text-xs text-sidebar-foreground/70">{roleLabels[user.role]}</p>
+          </div>
+        </Link>
+      </div>
+
+      {/* Navigation */}
+      <nav className="flex-1 p-4 space-y-1">
+        {navItems.map((item) => (
+          <Link
+            key={item.href}
+            href={item.href}
+            className={cn(
+              "flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors",
+              pathname === item.href
+                ? "bg-sidebar-accent text-sidebar-accent-foreground"
+                : "text-sidebar-foreground/80 hover:bg-sidebar-accent/50 hover:text-sidebar-accent-foreground"
+            )}
           >
-            <LogOut className="h-4 w-4 mr-2" />
-            Deconnexion
-          </Button>
+            {item.icon}
+            {item.label}
+          </Link>
+        ))}
+      </nav>
+
+      {/* User info & Logout */}
+      <div className="p-4 border-t border-sidebar-border mt-auto">
+        <div className="mb-3">
+          <p className="font-medium text-sm">{user.prenom} {user.nom}</p>
+          <p className="text-xs text-sidebar-foreground/70">{user.email}</p>
         </div>
+        <Button
+          variant="outline"
+          size="sm"
+          className="w-full bg-transparent border-sidebar-border text-sidebar-foreground hover:bg-sidebar-accent"
+          onClick={handleLogout}
+        >
+          <LogOut className="h-4 w-4 mr-2" />
+          Deconnexion
+        </Button>
+      </div>
+    </div>
+  )
+
+  return (
+    <div className="min-h-screen flex flex-col lg:flex-row">
+      {/* Mobile Header */}
+      <header className="lg:hidden flex items-center justify-between p-4 bg-sidebar border-b border-sidebar-border text-sidebar-foreground sticky top-0 z-50">
+        <div className="flex items-center gap-3">
+          <div className="relative h-8 w-8 overflow-hidden rounded-md">
+            <img src="/ism-logo.jpg" alt="ISM Logo" className="h-full w-full object-cover" />
+          </div>
+          <span className="font-bold">ISM Admissions</span>
+        </div>
+        <Sheet>
+          <SheetTrigger asChild>
+            <Button variant="ghost" size="icon">
+              <Menu className="h-6 w-6" />
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="left" className="w-72 p-0 bg-sidebar text-sidebar-foreground border-r border-sidebar-border">
+            <SidebarContent />
+          </SheetContent>
+        </Sheet>
+      </header>
+
+      {/* Desktop Sidebar */}
+      <aside className="hidden lg:flex w-64 bg-sidebar text-sidebar-foreground flex-col border-r border-sidebar-border shrink-0 h-screen sticky top-0">
+        <SidebarContent />
       </aside>
 
       {/* Main content */}
-      <main className="flex-1 bg-background overflow-auto">
+      <main className="flex-1 bg-background overflow-auto w-full">
         {children}
       </main>
     </div>
