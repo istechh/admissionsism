@@ -41,8 +41,7 @@ export default function HomePage() {
     setError("")
     setIsLoading(true)
 
-    // Simulate network delay for premium feel
-    await new Promise(resolve => setTimeout(resolve, 800))
+
 
     const loggedInUser = login(loginEmail, loginPassword)
 
@@ -73,7 +72,7 @@ export default function HomePage() {
       return
     }
 
-    await new Promise(resolve => setTimeout(resolve, 800))
+
     register(registerEmail, registerPassword, registerNom, registerPrenom)
     router.push("/candidat")
     setIsLoading(false)
@@ -84,7 +83,7 @@ export default function HomePage() {
       {/* Left Column: Visual & Branding (Desktop) */}
       <div className="hidden lg:flex relative bg-primary flex-col justify-between p-12 text-white overflow-hidden">
         {/* Background Overlay Pattern */}
-        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center opacity-20 mix-blend-overlay"></div>
+        <div className="absolute inset-0 bg-[url('/login-bg.jpg')] bg-cover bg-center opacity-40 mix-blend-overlay"></div>
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
 
         {/* Content */}
@@ -129,7 +128,7 @@ export default function HomePage() {
 
         {/* Mobile Hero Header */}
         <div className="lg:hidden relative h-64 w-full bg-primary overflow-hidden flex flex-col justify-end p-6">
-          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center opacity-30 mix-blend-overlay"></div>
+          <div className="absolute inset-0 bg-[url('/login-bg.jpg')] bg-cover bg-center opacity-40 mix-blend-overlay"></div>
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
 
           <div className="relative z-10 text-white">
@@ -215,11 +214,19 @@ export default function HomePage() {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-2 text-xs text-muted-foreground bg-muted/50 p-4 rounded-lg">
-                    <div>Directeur: <code className="text-primary">dir123</code></div>
-                    <div>Agent: <code className="text-primary">agent123</code></div>
-                    <div>IT: <code className="text-primary">it123</code></div>
-                    <div>Candidat: <code className="text-primary">Inscrivez-vous ➔</code></div>
+                  <div className="space-y-2 text-xs text-muted-foreground bg-muted/50 p-4 rounded-lg">
+                    <div className="flex justify-between">
+                      <span className="font-semibold">Directeur:</span>
+                      <span className="font-mono">directeur@ism.sn / dir123</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="font-semibold">Agent:</span>
+                      <span className="font-mono">agent@ism.sn / agent123</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="font-semibold">IT:</span>
+                      <span className="font-mono">it@ism.sn / it123</span>
+                    </div>
                   </div>
                 </TabsContent>
 
