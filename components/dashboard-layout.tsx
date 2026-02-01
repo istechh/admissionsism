@@ -88,53 +88,53 @@ export function DashboardLayout({ children }: { children: ReactNode }) {
   }
 
   const SidebarContent = () => (
-    <div className="flex h-full flex-col">
+    <div className="flex h-full flex-col bg-white">
       {/* Logo */}
-      <div className="p-4 border-b border-sidebar-border">
+      <div className="p-4 border-b border-slate-100">
         <Link href="/" className="flex items-center gap-3">
           <div className="relative h-10 w-10 overflow-hidden rounded-md">
             <img src="/ism-logo.jpg" alt="ISM Logo" className="h-full w-full object-cover" />
           </div>
           <div>
-            <h1 className="font-bold text-lg">ISM Admissions</h1>
-            <p className="text-xs text-sidebar-foreground/70">{roleLabels[user.role]}</p>
+            <h1 className="font-bold text-sm text-slate-900">ISM Admissions</h1>
+            <p className="text-xs text-slate-500">{roleLabels[user.role]}</p>
           </div>
         </Link>
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 p-4 space-y-1">
+      <nav className="flex-1 p-3 space-y-0.5">
         {navItems.map((item) => (
           <Link
             key={item.href}
             href={item.href}
             className={cn(
-              "flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors",
+              "flex items-center gap-3 px-3 py-2 rounded text-sm font-medium transition-colors",
               pathname === item.href
-                ? "bg-sidebar-accent text-sidebar-accent-foreground"
-                : "text-sidebar-foreground/80 hover:bg-sidebar-accent/50 hover:text-sidebar-accent-foreground"
+                ? "bg-primary text-primary-foreground"
+                : "text-slate-700 hover:bg-slate-100"
             )}
           >
             {item.icon}
-            {item.label}
+            <span className="text-sm">{item.label}</span>
           </Link>
         ))}
       </nav>
 
       {/* User info & Logout */}
-      <div className="p-4 border-t border-sidebar-border mt-auto">
+      <div className="p-3 border-t border-slate-100 mt-auto">
         <div className="mb-3">
-          <p className="font-medium text-sm">{user.prenom} {user.nom}</p>
-          <p className="text-xs text-sidebar-foreground/70">{user.email}</p>
+          <p className="font-medium text-xs text-slate-900">{user.prenom} {user.nom}</p>
+          <p className="text-xs text-slate-500">{user.email}</p>
         </div>
         <Button
           variant="outline"
           size="sm"
-          className="w-full bg-transparent border-sidebar-border text-sidebar-foreground hover:bg-sidebar-accent"
+          className="w-full text-xs"
           onClick={handleLogout}
         >
-          <LogOut className="h-4 w-4 mr-2" />
-          Deconnexion
+          <LogOut className="h-3 w-3 mr-2" />
+          Déconnexion
         </Button>
       </div>
     </div>
@@ -143,32 +143,32 @@ export function DashboardLayout({ children }: { children: ReactNode }) {
   return (
     <div className="min-h-screen flex flex-col lg:flex-row">
       {/* Mobile Header */}
-      <header className="lg:hidden flex items-center justify-between p-4 bg-sidebar border-b border-sidebar-border text-sidebar-foreground sticky top-0 z-50">
-        <div className="flex items-center gap-3">
-          <div className="relative h-8 w-8 overflow-hidden rounded-md">
+      <header className="lg:hidden flex items-center justify-between p-4 bg-white border-b border-slate-100 sticky top-0 z-50">
+        <div className="flex items-center gap-2">
+          <div className="relative h-8 w-8 overflow-hidden rounded">
             <img src="/ism-logo.jpg" alt="ISM Logo" className="h-full w-full object-cover" />
           </div>
-          <span className="font-bold">ISM Admissions</span>
+          <span className="font-bold text-sm">ISM</span>
         </div>
         <Sheet>
           <SheetTrigger asChild>
-            <Button variant="ghost" size="icon">
-              <Menu className="h-6 w-6" />
+            <Button variant="ghost" size="icon" className="h-8 w-8">
+              <Menu className="h-5 w-5" />
             </Button>
           </SheetTrigger>
-          <SheetContent side="left" className="w-72 p-0 bg-sidebar text-sidebar-foreground border-r border-sidebar-border">
+          <SheetContent side="left" className="w-64 p-0 bg-white">
             <SidebarContent />
           </SheetContent>
         </Sheet>
       </header>
 
       {/* Desktop Sidebar */}
-      <aside className="hidden lg:flex w-64 bg-sidebar text-sidebar-foreground flex-col border-r border-sidebar-border shrink-0 h-screen sticky top-0">
+      <aside className="hidden lg:flex w-60 bg-white flex-col border-r border-slate-100 shrink-0 h-screen sticky top-0">
         <SidebarContent />
       </aside>
 
       {/* Main content */}
-      <main className="flex-1 bg-background overflow-auto w-full">
+      <main className="flex-1 bg-slate-50 overflow-auto w-full">
         {children}
       </main>
     </div>

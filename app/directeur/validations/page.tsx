@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import { DashboardLayout } from "@/components/dashboard-layout"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -12,7 +12,8 @@ import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { dataStore, schools, type Application, type ApplicationStatus } from "@/lib/store"
 import { useAuth } from "@/lib/auth-context"
-import { Search, Eye, CheckCircle, XCircle, FileText, User, Phone, Mail, MapPin, GraduationCap, TrendingUp, AlertTriangle } from "lucide-react"
+import { recommendStream } from "@/lib/intelligence"
+import { Search, Eye, CheckCircle, XCircle, FileText, User, Phone, Mail, MapPin, GraduationCap, TrendingUp, AlertTriangle, Lightbulb } from "lucide-react"
 
 const statusConfig: Record<string, { label: string; color: string }> = {
   verifiee: { label: "Verifiee", color: "bg-purple-100 text-purple-800" },
@@ -22,6 +23,7 @@ const statusConfig: Record<string, { label: string; color: string }> = {
 
 export default function DirecteurValidations() {
   const { user } = useAuth()
+  const canvasRef = useRef<HTMLCanvasElement>(null)
   const [applications, setApplications] = useState<Application[]>([])
   const [filteredApplications, setFilteredApplications] = useState<Application[]>([])
   const [search, setSearch] = useState("")
@@ -32,6 +34,9 @@ export default function DirecteurValidations() {
   const [showActionModal, setShowActionModal] = useState(false)
   const [actionType, setActionType] = useState<"validate" | "reject">("validate")
   const [comment, setComment] = useState("")
+  const [isDrawing, setIsDrawing] = useState(false)
+  const [signatureDrawn, setSignatureDrawn] = useState(false)
+  const [recommendedStream, setRecommendedStream] = useState<string>("")
 
   useEffect(() => {
     loadApplications()
@@ -69,14 +74,70 @@ export default function DirecteurValidations() {
     setSelectedApp(app)
     setActionType(type)
     setComment("")
+    setSignatureDrawn(false)
+    if (type === "validate") {
+      setRecommendedStream(recommendStream(app.predictiveScore))
+    }
     setShowActionModal(true)
   }
 
+  const startDrawing = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    if (!canvasRef.current) return
+    const canvas = canvasRef.current
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return
+    
+    const rect = canvas.getBoundingClientRect()
+    const x = e.clientX - rect.left
+    const y = e.clientY - rect.top
+    
+    ctx.beginPath()
+    ctx.moveTo(x, y)
+    setIsDrawing(true)
+  }
+
+  const draw = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    if (!isDrawing || !canvasRef.current) return
+    const canvas = canvasRef.current
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return
+    
+    const rect = canvas.getBoundingClientRect()
+    const x = e.clientX - rect.left
+    const y = e.clientY - rect.top
+    
+    ctx.lineTo(x, y)
+    ctx.strokeStyle = '#000'
+    ctx.lineWidth = 2
+    ctx.lineCap = 'round'
+    ctx.stroke()
+    setSignatureDrawn(true)
+  }
+
+  const stopDrawing = () => {
+    setIsDrawing(false)
+  }
+
+  const clearSignature = () => {
+    if (canvasRef.current) {
+      const ctx = canvasRef.current.getContext('2d')
+      ctx?.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height)
+      setSignatureDrawn(false)
+    }
+  }
+
   const confirmAction = () => {
-    if (!selectedApp || !user) return
+    if (!selectedApp || !user || (actionType === "validate" && !signatureDrawn)) return
+    if (actionType === "validate" && signatureDrawn && !canvasRef.current) return
 
     const newStatus: ApplicationStatus = actionType === "validate" ? "en_attente_it" : "rejetee"
     const userName = `${user.prenom} ${user.nom}`
+
+    const extraData: any = { directeurId: user.id }
+    if (actionType === "validate") {
+      extraData.recommendedStream = recommendedStream
+      extraData.signatureDate = new Date().toISOString()
+    }
 
     dataStore.updateApplicationStatus(
       selectedApp.id,
@@ -84,11 +145,12 @@ export default function DirecteurValidations() {
       user.id,
       userName,
       comment || (actionType === "validate" ? "Candidature validee" : "Candidature rejetee"),
-      { directeurId: user.id }
+      extraData
     )
 
     setShowActionModal(false)
     setSelectedApp(null)
+    clearSignature()
     loadApplications()
   }
 
@@ -447,18 +509,58 @@ export default function DirecteurValidations() {
               </DialogTitle>
               <DialogDescription>
                 {actionType === "validate"
-                  ? "Confirmez la validation de cette candidature. Le candidat sera notifie et le dossier transmis a l'equipe IT."
-                  : "Confirmez le rejet de cette candidature. Le candidat sera notifie par email."
+                  ? "Confirmez la validation en signant numériquement ci-dessous."
+                  : "Confirmez le rejet de cette candidature."
                 }
               </DialogDescription>
             </DialogHeader>
 
             <div className="space-y-4">
-              <div className="p-4 bg-muted rounded-lg">
-                <p className="font-medium">{selectedApp?.prenom} {selectedApp?.nom}</p>
-                <p className="text-sm text-muted-foreground">{selectedApp?.numero}</p>
-                <p className="text-sm text-muted-foreground">{selectedApp?.classe} - {selectedApp?.ecole}</p>
+              <div className="p-3 bg-slate-50 rounded-lg border">
+                <p className="font-medium text-sm">{selectedApp?.prenom} {selectedApp?.nom}</p>
+                <p className="text-xs text-muted-foreground">{selectedApp?.numero} • {selectedApp?.classe}</p>
               </div>
+
+              {actionType === "validate" && (
+                <>
+                  {/* Recommandation de filière */}
+                  <div className="p-3 bg-amber-50 border border-amber-200 rounded-lg">
+                    <div className="flex items-start gap-2">
+                      <Lightbulb className="h-4 w-4 text-amber-600 mt-0.5 flex-shrink-0" />
+                      <div className="flex-1">
+                        <p className="text-sm font-medium text-amber-900">Orientation recommandée</p>
+                        <p className="text-sm text-amber-800 mt-1">Filière: <span className="font-semibold">{recommendedStream}</span></p>
+                        <p className="text-xs text-amber-700 mt-1">Basée sur le profil académique et le score IA</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Signature électronique */}
+                  <div>
+                    <Label className="text-sm font-medium">Signature électronique *</Label>
+                    <div className="border-2 border-dashed rounded-lg p-2 bg-slate-50 mt-2">
+                      <canvas
+                        ref={canvasRef}
+                        width={400}
+                        height={120}
+                        className="w-full border border-slate-200 rounded cursor-crosshair bg-white"
+                        onMouseDown={startDrawing}
+                        onMouseMove={draw}
+                        onMouseUp={stopDrawing}
+                        onMouseLeave={stopDrawing}
+                      />
+                    </div>
+                    <div className="flex gap-2 mt-2">
+                      <Button variant="outline" size="sm" onClick={clearSignature}>
+                        Effacer
+                      </Button>
+                      <span className="text-xs text-muted-foreground self-center">
+                        {signatureDrawn ? "✓ Signature captée" : "Veuillez signer ci-dessus"}
+                      </span>
+                    </div>
+                  </div>
+                </>
+              )}
 
               <div className="space-y-2">
                 <Label htmlFor="comment">
@@ -470,6 +572,7 @@ export default function DirecteurValidations() {
                     ? "Ajoutez un commentaire si necessaire..."
                     : "Indiquez le motif du rejet..."
                   }
+                  className="text-sm"
                   value={comment}
                   onChange={(e) => setComment(e.target.value)}
                 />
@@ -484,7 +587,7 @@ export default function DirecteurValidations() {
                 onClick={confirmAction}
                 className={actionType === "validate" ? "bg-green-600 hover:bg-green-700" : ""}
                 variant={actionType === "reject" ? "destructive" : "default"}
-                disabled={actionType === "reject" && !comment}
+                disabled={(actionType === "reject" && !comment) || (actionType === "validate" && !signatureDrawn)}
               >
                 {actionType === "validate" ? "Confirmer la validation" : "Confirmer le rejet"}
               </Button>

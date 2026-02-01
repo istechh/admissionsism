@@ -158,3 +158,38 @@ export function generateAccountDetails(nom: string, prenom: string): AccountDeta
 
     return { email, passwordTemp, studentId };
 }
+
+/**
+ * Recommande une filière basée sur le score prédictif
+ */
+export function recommendStream(predictiveScore: PredictiveScoreDetails | undefined, bacSerie?: string): string {
+    if (!predictiveScore) return "Général";
+
+    const { score, breakdown } = predictiveScore;
+    
+    // Si score académique très élevé (>60)
+    if (breakdown.academic >= 70) {
+        if (breakdown.serie >= 12) {
+            return "Informatique"; // Filière technique exigeante
+        }
+        return "Gestion"; // Filière générale haut niveau
+    }
+    
+    // Score académique bon (40-60)
+    if (breakdown.academic >= 40) {
+        if (breakdown.serie >= 12) {
+            return "Engineering"; // Filière science/tech
+        }
+        return "Management"; // Filière business
+    }
+    
+    // Par défaut selon série du bac
+    if (bacSerie) {
+        const serie = bacSerie.toLowerCase();
+        if (serie.includes('s') || serie.includes('scientifique')) return "Informatique";
+        if (serie.includes('es') || serie.includes('economique')) return "Gestion";
+        if (serie.includes('l') || serie.includes('litteraire')) return "Management";
+    }
+    
+    return "Général";
+}
