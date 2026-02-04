@@ -12,10 +12,6 @@ export const metadata: Metadata = {
   title: 'ISM Admissions - Portail de Candidature',
   description: 'Plateforme de digitalisation des admissions de l\'Institut Supérieur de Management (ISM)',
   generator: 'ISM',
-  icons: {
-    icon: '/ism-logo.jpg',
-    apple: '/ism-logo.jpg',
-  },
 }
 
 export default function RootLayout({
