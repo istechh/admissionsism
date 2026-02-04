@@ -2,6 +2,7 @@ import React from "react"
 import type { Metadata } from 'next'
 import { Open_Sans } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
+import { Toaster } from 'sonner'
 import { AuthProvider } from '@/lib/auth-context'
 import './globals.css'
 
@@ -29,6 +30,7 @@ export default function RootLayout({
           {children}
         </AuthProvider>
         <Analytics />
+        <Toaster position="top-right" richColors />
       </body>
     </html>
   )

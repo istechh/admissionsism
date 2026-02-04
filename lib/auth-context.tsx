@@ -26,7 +26,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setUser(dataStore.getCurrentUser())
     })
 
-    return unsubscribe
+    return () => {
+      unsubscribe()
+    }
   }, [])
 
   const login = (email: string, password: string) => {

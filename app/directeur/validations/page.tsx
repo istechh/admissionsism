@@ -86,11 +86,11 @@ export default function DirecteurValidations() {
     const canvas = canvasRef.current
     const ctx = canvas.getContext('2d')
     if (!ctx) return
-    
+
     const rect = canvas.getBoundingClientRect()
     const x = e.clientX - rect.left
     const y = e.clientY - rect.top
-    
+
     ctx.beginPath()
     ctx.moveTo(x, y)
     setIsDrawing(true)
@@ -101,11 +101,11 @@ export default function DirecteurValidations() {
     const canvas = canvasRef.current
     const ctx = canvas.getContext('2d')
     if (!ctx) return
-    
+
     const rect = canvas.getBoundingClientRect()
     const x = e.clientX - rect.left
     const y = e.clientY - rect.top
-    
+
     ctx.lineTo(x, y)
     ctx.strokeStyle = '#000'
     ctx.lineWidth = 2
@@ -133,7 +133,7 @@ export default function DirecteurValidations() {
     const newStatus: ApplicationStatus = actionType === "validate" ? "en_attente_it" : "rejetee"
     const userName = `${user.prenom} ${user.nom}`
 
-    const extraData: any = { directeurId: user.id }
+    const extraData: Partial<Application> = { directeurId: user.id }
     if (actionType === "validate") {
       extraData.recommendedStream = recommendedStream
       extraData.signatureDate = new Date().toISOString()
@@ -344,7 +344,7 @@ export default function DirecteurValidations() {
                       </h4>
                       <div className="flex items-baseline gap-1">
                         <span className={`text-2xl font-bold ${selectedApp.predictiveScore.color === 'green' ? 'text-green-600' :
-                            selectedApp.predictiveScore.color === 'yellow' ? 'text-yellow-600' : 'text-red-600'
+                          selectedApp.predictiveScore.color === 'yellow' ? 'text-yellow-600' : 'text-red-600'
                           }`}>
                           {selectedApp.predictiveScore.score}
                         </span>

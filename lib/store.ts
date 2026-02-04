@@ -69,6 +69,9 @@ export interface Application {
   motDePasseTemp?: string
   numeroCarteEtudiant?: string
   candidatId?: string
+  // Validation directeur
+  recommendedStream?: string
+  signatureDate?: string
 }
 
 export interface School {
@@ -395,14 +398,6 @@ class DataStore {
     if (typeof window !== 'undefined') {
       localStorage.removeItem('ism_user')
     }
-    // Si validée, générer les infos compte
-    if (status === 'validee') {
-      const accounts = generateAccountDetails(app.nom, app.prenom);
-      app.emailISM = accounts.email;
-      app.motDePasseTemp = accounts.passwordTemp;
-      app.numeroCarteEtudiant = accounts.studentId;
-    }
-
     this.notify()
   }
 
